@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Zone | جواهر فري فاير</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0d16;
+  color: white;
+}
+
+header {
+  text-align: center;
+  padding: 25px 15px;
+  background: linear-gradient(135deg, #202447, #10121d);
+  border-bottom: 2px solid #ffbd39;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffbd39;
+}
+
+header p {
+  color: #c5c8d8;
+}
+
+main {
+  width: 92%;
+  max-width: 520px;
+  margin: 22px auto;
+}
+
+.card {
+  background: #191c2b;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 18px;
+  border: 1px solid #30354a;
+}
+
+h2 {
+  font-size: 20px;
+  margin-top: 0;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 9px;
+  border: 1px solid #444a62;
+  background: #0e101a;
+  color: white;
+  font-size: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.package {
+  background: #252a40;
+  border: 2px solid transparent;
+  color: white;
+  padding: 17px 5px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.package span {
+  display: block;
+  color: #ffbd39;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.package.selected {
+  border-color: #ffbd39;
+  background: #383047;
+}
+
+.action {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: #ffbd39;
+  color: #171717;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#message {
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.notice {
+  color: #ffe1a1;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+footer {
+  text-align: center;
+  color: #a4a8bc;
+  padding: 25px 12px;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">💎 DIAMOND ZONE</div>
+  <p>واجهة تجريبية لشحن جواهر Free Fire</p>
+</header>
+
+<main>
+
+  <section class="card">
+    <h2>🎮 معرّف اللاعب</h2>
+    <p>أدخل المعرّف الرقمي للاختبار.</p>
+    <input
+      id="player"
+      type="text"
+      inputmode="numeric"
+      maxlength="20"
+      placeholder="Player ID">
+    <p class="notice">
+      هذا النموذج لا يتحقق من وجود الحساب الحقيقي.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>💎 اختر باقة الجواهر</h2>
+
+    <div class="grid">
+      <button class="package" data-pack="100 جوهرة">
+        💎 100 جوهرة
+        <span>باقة تجريبية</span>
+      </button>
+
+      <button class="package" data-pack="310 جواهر">
+        💎 310 جواهر
+        <span>باقة تجريبية</span>
+      </button>
+
+      <button class="package" data-pack="520 جوهرة">
+        💎 520 جوهرة
+        <span>باقة تجريبية</span>
+      </button>
+
+      <button class="package" data-pack="1060 جوهرة">
+        💎 1060 جوهرة
+        <span>باقة تجريبية</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>📦 متابعة الطلب</h2>
+    <button class="action" id="continue">
+      متابعة تجريبية
+    </button>
+    <p id="message" aria-live="polite"></p>
+    <p class="notice">
+      لا يوجد دفع أو شحن حقيقي في هذه النسخة.
+      لا تدخل كلمة مرور حسابك.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  موقع تجريبي مستقل، غير تابع رسميًا لشركة Garena.
+</footer>
+
+<script>
+let selected = "";
+
+document.querySelectorAll(".package").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".package").forEach(item => {
+      item.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+    selected = button.dataset.pack;
+
+    document.getElementById("message").textContent =
+      "الباقة المختارة: " + selected;
+  });
+});
+
+document.getElementById("continue").addEventListener("click", () => {
+  const id = document.getElementById("player").value.trim();
+  const message = document.getElementById("message");
+
+  if (!/^[0-9]{5,20}$/.test(id)) {
+    message.textContent =
+      "تحقق من إدخال معرّف رقمي بين 5 و20 رقمًا.";
+    return;
+  }
+
+  if (!selected) {
+    message.textContent = "اختر باقة أولًا.";
+    return;
+  }
+
+  message.textContent =
+    "نجح الاختبار! المعرّف: " + id +
+    "، الباقة: " + selected +
+    ". لم يتم شحن الجواهر فعليًا.";
+});
+</script>
+
+</body>
+  </html>
+  
